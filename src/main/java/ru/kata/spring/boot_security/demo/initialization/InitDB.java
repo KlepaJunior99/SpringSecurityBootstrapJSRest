@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.initialization;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import ru.kata.spring.boot_security.demo.model.Role;
@@ -24,7 +25,6 @@ public class InitDB {
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
     @PostConstruct
     public void createTestUsersWithRoles() {
         Role role1 = new Role("ROLE_ADMIN");
@@ -34,9 +34,9 @@ public class InitDB {
         roleRepository.save(role2);
 
         User user1 = new User
-                ("Булат", "Батуллин", "27", "bulat@mail.ru", passwordEncoder.encode("user"));
+                ("bulat@mail.ru","Булат", "Батуллин", (byte) 27, passwordEncoder.encode("user"));
         User user2 = new User
-                ("Иван", "Иванов", "50","admin@mail.ru", passwordEncoder.encode("admin"));
+                ("admin@mail.ru", "Иван", "Иванов", (byte) 57, passwordEncoder.encode("admin"));
 
         user1.setRoles(new HashSet<>(Set.of(role2)));
         user2.setRoles(new HashSet<>(Set.of(role1)));

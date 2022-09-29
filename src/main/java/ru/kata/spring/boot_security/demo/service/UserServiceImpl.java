@@ -1,24 +1,23 @@
 package ru.kata.spring.boot_security.demo.service;
 
-
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
+import ru.kata.spring.boot_security.demo.model.User;
 
 import java.security.InvalidParameterException;
 import java.util.List;
 
 @Service
-public class UserServiceImp implements UserService {
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImp(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -36,7 +35,7 @@ public class UserServiceImp implements UserService {
     @Override
     @Transactional(readOnly = true)
     public User getUserById(Long id) {
-        return userRepository.getById(id);
+        return userRepository.getReferenceById(id);
     }
 
     @Override
@@ -70,14 +69,8 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public User getUserByName(String username) {
-        return userRepository.findByUsername(username);
-    }
-
-    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = getUserByName(username);
+        User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException(String.format("User '%s' not found", username));
         }
