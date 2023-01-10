@@ -1,4 +1,4 @@
-package ru.batullin.springboot_bootstrap.model;
+package springsecurity.result_project.model;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,8 +12,8 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "users")
-public class User implements UserDetails {
+@Table(name = "person")
+public class Person implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,15 +31,15 @@ public class User implements UserDetails {
     private String password;
 
     @ManyToMany
-    @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    @JoinTable(name = "person_roles",
+            joinColumns = @JoinColumn(name = "person_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id", referencedColumnName = "id"))
     private Set<Role> roles = new HashSet<>();
 
-    public User() {
+    public Person() {
     }
 
-    public User(String username, String firstName, String lastName, Byte age, String password) {
+    public Person(String username, String firstName, String lastName, Byte age, String password) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -76,8 +76,8 @@ public class User implements UserDetails {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(getId(), user.getId());
+        Person person = (Person) o;
+        return Objects.equals(getId(), person.getId());
     }
 
     @Override

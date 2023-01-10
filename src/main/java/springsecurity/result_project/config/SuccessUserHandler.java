@@ -1,4 +1,4 @@
-package ru.batullin.springboot_bootstrap.config;
+package springsecurity.result_project.config;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;

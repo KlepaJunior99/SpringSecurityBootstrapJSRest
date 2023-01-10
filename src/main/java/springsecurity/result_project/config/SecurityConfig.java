@@ -1,4 +1,4 @@
-package ru.batullin.springboot_bootstrap.config;
+package springsecurity.result_project.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,16 +9,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.batullin.springboot_bootstrap.service.UserService;
+import springsecurity.result_project.service.PersonService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final UserService userService;
+    private final PersonService personService;
     private final SuccessUserHandler successUserHandler;
 
-    public SecurityConfig(UserService userService, SuccessUserHandler successUserHandler) {
-        this.userService = userService;
+    public SecurityConfig(PersonService personService, SuccessUserHandler successUserHandler) {
+        this.personService = personService;
         this.successUserHandler = successUserHandler;
     }
 
@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setPasswordEncoder(passwordEncoder());
-        authenticationProvider.setUserDetailsService(userService);
+        authenticationProvider.setUserDetailsService(personService);
         return authenticationProvider;
     }
 }

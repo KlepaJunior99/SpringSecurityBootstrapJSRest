@@ -1,4 +1,4 @@
-package ru.batullin.springboot_bootstrap.model;
+package springsecurity.result_project.model;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

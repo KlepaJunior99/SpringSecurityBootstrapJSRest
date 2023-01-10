@@ -10,21 +10,27 @@
   <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
 </head>
 <body>
+
+
 <div class="container">
+
   <form class="form-signin" method="post" th:action="@{/train-login}">
-    <h2 class="form-signin-heading">Please sign in</h2>
-    <div th:if="${param.error}" class="alert alert-danger" role="alert">Invalid credentials</div>
+    <h2 class="form-signin-heading">Пожалуйста введите ваш логин и пароль</h2>
+    <div th:if="${param.error}" class="alert alert-danger" role="alert">Неверный логин и/или пароль</div>
     <p>
-      <label for="username" class="sr-only">Email address</label>
-      <input type="text" id="username" name="username" class="form-control" placeholder="Email address" required autofocus>
+      <label for="username" class="sr-only">Ваш Email</label>
+      <input type="text" id="username" name="username" class="form-control" placeholder="Ваш Email" required autofocus>
     </p>
     <p>
-      <label for="password" class="sr-only">Password</label>
-      <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+      <label for="password" class="sr-only">Пароль</label>
+      <input type="password" id="password" name="password" class="form-control" placeholder="Пароль" required>
     </p>
     <input name="_csrf" type="hidden" value="5ce71284-3489-4ccc-bd5f-8769d4ddbb35" />
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
   </form>
+
 </div>
+
+
 </body>
 </html>
