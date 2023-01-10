@@ -26,7 +26,6 @@
 
 <div class="container-fluid g-0 align-items-start">
   <div class="row g-0" th:with="isAdmin=${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
-    <!--/* left block */-->
     <div class="col-4 nav flex-column nav-pills fs-5 py-1 my-3" id="v-pills-tab" role="tablist"
          aria-orientation="vertical" style="width: 280px;">
       <a th:if="${isAdmin}" class="nav-link active" id="v-pills-admin-tab" data-bs-toggle="pill"
