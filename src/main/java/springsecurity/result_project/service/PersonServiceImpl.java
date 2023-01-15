@@ -16,63 +16,67 @@ public class PersonServiceImpl implements PersonService {
     private final PersonRepository personRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public PersonServiceImpl(PersonRepository personRepository, @Lazy PasswordEncoder passwordEncoder) {
-        this.personRepository = personRepository;
+    public PersonServiceImpl(PersonRepository userRepository, @Lazy PasswordEncoder passwordEncoder) {
+        this.personRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     @Transactional
-    public void save(Person person) {
-        Person personFromDB = personRepository.findByUsername(person.getUsername());
-        if (personFromDB == null) {
-            person.setPassword(passwordEncoder.encode(person.getPassword()));
-            personRepository.save(person);
+    public boolean addUser(Person person) {
+        Person userFromDB = personRepository.findByUsername(person.getUsername());
+        if (userFromDB != null) {
+            return false;
         }
+        person.setPassword(passwordEncoder.encode(person.getPassword()));
+        personRepository.save(person);
+        return true;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Person show(Long id) {
-        return personRepository.getReferenceById(id);
+    public Person getUserById(Long id) {
+        return personRepository.findById(id).get();
     }
 
     @Override
     @Transactional
-    public void update(Person person) {
-        if (personRepository.findByUsername(person.getUsername()) != null && !personRepository.findByUsername(person.getUsername()).getId().equals(person.getId())) {
-            throw new InvalidParameterException("Пользователь с таким email уже существует: "
-                    + person.getUsername());
+    public boolean updateUser(Person person) throws InvalidParameterException {
+        if (personRepository.findByUsername(person.getUsername()) != null &&
+                !personRepository.findByUsername(person.getUsername()).getId().equals(person.getId())) {
+            return false;
         }
         if (person.getPassword().isEmpty()) {
             person.setPassword(personRepository.findById(person.getId()).get().getPassword());
         } else {
             person.setPassword(passwordEncoder.encode(person.getPassword()));
         }
-        personRepository.saveAndFlush(person);
+        personRepository.save(person);
+        return true;
     }
 
     @Override
     @Transactional
-    public void delete(Long id) {
-        if (personRepository.findById(id).isPresent()) {
-            personRepository.deleteById(id);
+    public boolean deleteUserById(Long id) {
+        if (personRepository.findById(id).isEmpty()) {
+            return false;
         }
+        personRepository.deleteById(id);
+        return true;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Person> showAll() {
+    public List<Person> getAllUsers() {
         return personRepository.findAll();
     }
 
-
     @Override
     public Person loadUserByUsername(String username) throws UsernameNotFoundException {
-        Person person = personRepository.findByUsername(username);
-        if (person == null) {
-            throw new UsernameNotFoundException(String.format("Пользователь '%s' не найден", username));
+        Person user = personRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException(String.format("Person '%s' not found ", username));
         }
-        return person;
+        return user;
     }
 }
