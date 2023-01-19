@@ -256,6 +256,7 @@ if (document.getElementById('v-pills-admin')) {
             age: document.getElementById('ageEdit').value,
             username: document.getElementById('usernameEdit').value,
             password: document.getElementById('passwordEdit').value,
+
             roles: userRolesEdited
         };
         sendRequestInfo('PUT', '/admin/', userEdited).then(user => {
@@ -272,6 +273,7 @@ if (document.getElementById('v-pills-admin')) {
 
     document.getElementById('deleteForm').addEventListener('submit', (event) => {
         event.preventDefault();
+
         sendRequestInfo('DELETE', '/admin/' + document.getElementById('deleteUserId').value).then(id => allUsersTableRowDelete(id));
     });
 }
